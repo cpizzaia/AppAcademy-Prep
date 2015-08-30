@@ -71,3 +71,34 @@ class RPNCalculator
 		value
 	end
 end
+
+if __FILE__ == $PROGRAM_NAME
+	file_name = ARGV[0]
+	Calculator = RPNCalculator.new
+	if file_name != nil && File.exist?(file_name)
+		idk = []
+		file_lines = []
+		File.open("calculator_instructions.txt") do |file|
+			file_lines = file.readlines()
+		end
+		puts file_lines
+
+		for i in 0..file_lines.length-1
+			output << Calculator.evaluate(file_lines[i])
+		end
+		puts output
+	else
+		calculator_input = ""
+		while(true)
+			user_input = gets.chomp
+			if user_input == ""
+				break
+			else
+				calculator_input << "#{user_input} "
+			end
+		end
+		puts Calculator.evaluate(calculator_input)
+	end
+end
+
+
