@@ -20,6 +20,7 @@ class ArticlesController < ApplicationController
 	def destroy
 		@article = Article.find(params[:id])
 		@article.destroy
+		update_tags
 		flash.notice = "Article #{@article.title} was deleted."
 		redirect_to action: :index
 	end
@@ -29,7 +30,14 @@ class ArticlesController < ApplicationController
 	def update
 		@article = Article.find(params[:id])
 		@article.update(article_params)
+		update_tags
 		flash.notice = "Article #{@article.title} was updated."
 		redirect_to article_path(@article)
+	end
+	def update_tags
+		@tags = Tag.all
+		@tags.each do |tag| #updating tag list by deleting tags that arent associated with articles
+			if tag.articles.empty? then tag.destroy end
+		end
 	end
 end
