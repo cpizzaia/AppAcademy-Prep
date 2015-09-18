@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
 	include ArticlesHelper
+	before_filter :require_login, except: [:index, :show]
 	def index
 		@articles = Article.all 
 	end
@@ -34,6 +35,7 @@ class ArticlesController < ApplicationController
 		flash.notice = "Article #{@article.title} was updated."
 		redirect_to article_path(@article)
 	end
+	private
 	def update_tags
 		@tags = Tag.all
 		@tags.each do |tag| #updating tag list by deleting tags that arent associated with articles
